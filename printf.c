@@ -26,6 +26,10 @@ int _printf(const char *format, ...)
 				case 's':
 					numberofchars += printstr(list);
 					break;
+				case 'd':
+					break;
+				case 'i':
+					break;
 				default:
 					i++;
 					break;
