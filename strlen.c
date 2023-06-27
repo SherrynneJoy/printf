@@ -2,7 +2,7 @@
 #include "main.h"
 /**
  * _strlen - measures length of string
- * @str: strin being measured
+ * @str: string being measured
  * Return: len
  */
 size_t _strlen(const char *str)
