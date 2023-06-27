@@ -14,8 +14,7 @@ int printChar(va_list args)
 	char c;
 
 	c = va_arg(args, int);
-	write(1, &c, 1);
-	return (1);
+	return (_putchar(c));
 }
 
 /**
@@ -27,55 +26,57 @@ int printChar(va_list args)
 int printStr(va_list args)
 {
 	char c, *str;
-	unsigned int i;
-	unsigned int length;
+	int n = 0;
 
 	str = va_arg(args, char *);
-	length = _strlen(str);
-
-	while (i < length)
+	while (*str != '\0')
 	{
-		c = str[i];
-		write(1, &c, 1);
-		i++;
+		c = *str;
+		n = n + _putchar(c);
+		str++;
 	}
-	return (1);
+	return (n);
 }
 
 /**
- * _printf - prints output of any format
+ * print_format - prints output of any format
  * @format: a character string
+ * @args: a variable number of arguments
  * Return: 0 when it evaluates
+ */
+
+int print_format(va_list args, char format)
+{
+	switch (format)
+	{
+		case 'c':
+			return (printChar(args));
+		case 's':
+			return (printStr(args));
+	}
+	return (0);
+}
+
+/**
+ * _printf - prints output
+ * @format: a string pointer
+ * Return: 0 when successful
  */
 
 int _printf(const char *format, ...)
 {
+	int numberofchars = 0;
 	va_list args;
-	char c;
-	int i = 0, numberofchars = 0;
 
 	va_start(args, format);
-	while (format[i])
+	while (*format != '\0')
 	{
-		if (format[i] == '%')
-		{
-			i++;
-			switch (format[i])
-			{
-				case 'c':
-					numberofchars += printChar(args);
-					break;
-				case 's':
-					numberofchars += printStr(args);
-					break;
-			}
-		}
+		if (*format == '%' && *(++format) != '\0')
+		numberofchars += print_format(args, *format);
 		else
-		{
-			write(1, &c, 1);
-			numberofchars++;
-		}
-		i++;
+			numberofchars += _putchar(*format);
+		if (*format != '\0')
+			format++;
 	}
 	va_end(args);
 	return (numberofchars);
