@@ -53,6 +53,10 @@ int print_format(va_list args, char format)
 			return (printChar(args));
 		case 's':
 			return (printStr(args));
+		case 'd':
+			return (print_decimal(args, format));
+		case 'i':
+			return (print_integer(args, format));
 	}
 	return (0);
 }
