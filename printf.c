@@ -47,6 +47,10 @@ int print_format(va_list list, char format)
 			return (printchar(list));
 		case 's':
 			return (printstr(list));
+		case 'd':
+			return (printdecimal(list, format));
+		case 'i':
+			return (printint(list, format));
 	}
 	return (0);
 }
