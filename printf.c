@@ -3,63 +3,8 @@
 #include <unistd.h>
 #include <stdio.h>
 
-/**
- * printChar - prints a char
- * @args: prints variable arguments
- * Return: 0 when it evaluates
- */
-
-int printChar(va_list args)
-{
-	char c;
-
-	c = va_arg(args, int);
-	return (_putchar(c));
-}
-
-/**
- * printStr - prints a string
- * @args: prints the next variable argument
- * Return: nothing
- */
-
-int printStr(va_list args)
-{
-	char c, *str;
-	int n = 0;
-
-	str = va_arg(args, char *);
-	while (*str != '\0')
-	{
-		c = *str;
-		n = n + _putchar(c);
-		str++;
-	}
-	return (n);
-}
-
-/**
- * print_format - prints output of any format
- * @format: a character string
- * @args: a variable number of arguments
- * Return: 0 when it evaluates
- */
-
-int print_format(va_list args, char format)
-{
-	switch (format)
-	{
-		case 'c':
-			return (printChar(args));
-		case 's':
-			return (printStr(args));
-		case 'd':
-			return (print_decimal(args, format));
-		case 'i':
-			return (print_integer(args, format));
-	}
-	return (0);
-}
+int check_specifier(const char *format, va_list args,
+		fmt_t *fmt);
 
 /**
  * _printf - prints output
@@ -69,19 +14,69 @@ int print_format(va_list args, char format)
 
 int _printf(const char *format, ...)
 {
-	int numberofchars = 0;
 	va_list args;
+	int numberofchars = 0;
+	fmt_t fmt[] = {
+		{"c", printChar},
+		{"s", printStr},
+		{NULL, NULL}
+	};
 
+	if (format == NULL)
+		return (-1);
 	va_start(args, format);
-	while (*format != '\0')
-	{
-		if (*format == '%' && *(++format) != '\0')
-		numberofchars += print_format(args, *format);
-		else
-			numberofchars += _putchar(*format);
-		if (*format != '\0')
-			format++;
-	}
+	numberofchars = check_specifier(format, args, fmt);
 	va_end(args);
+	return (numberofchars);
+}
+
+/**
+ * check_specifier - checks if the specifiers are valid
+ * @format: the specifier (char *)
+ * @args: prints the next variable argument
+ * @fmt: pointer to structure fmt_t
+ * Return: 0 when it evaluates
+ */
+
+int check_specifier(const char *format, va_list args, fmt_t *fmt)
+{
+	int i = 0;
+	int j = 0;
+	int numberofchars = 0;
+	char letters;
+
+	letters = format[i];
+	while (letters != '\0')
+	{
+		if (letters == '%')
+		{
+			j = 0;
+			i++;
+			letters = format[i];
+			while (fmt[j].p != NULL && letters != *(fmt[j].p))
+			{
+				j++;
+			}
+			if (fmt[j].p != NULL)
+				numberofchars += fmt[j].f(args);
+			else
+			{
+				if (letters == '\0')
+					return (-1);
+				if (letters == '%')
+				{
+					numberofchars += _putchar('%');
+				}
+				else
+					numberofchars += _putchar(letters);
+			}
+		}
+		else
+		{
+			numberofchars += _putchar(letters);
+		}
+		i++;
+		letters = format[i];
+	}
 	return (numberofchars);
 }
