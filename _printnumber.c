@@ -33,12 +33,12 @@ int base_fn(size_t unsignedlong, int base)
 	return (count);
 }
 /**
- * printdecimal - prints decimal
+ * _printdecimal - prints decimal
  * @list: list from which to loop
  * @format: format specified
  * Return: count
  */
-int printdecimal(va_list list, char format)
+int _printdecimal(va_list list, char format)
 {
 	int c = va_arg(list, int);
 	int count = 0;
@@ -53,12 +53,12 @@ int printdecimal(va_list list, char format)
 	return (count);
 }
 /**
- * printint - prints integer acccording to its actual base
+ * _printint - prints integer acccording to its actual base
  * @list: list to go through
  * @base: base of the int as either decimal, hexadecimal/octal
  * Return: base_fn(c, base)
  */
-int printint(va_list list, int base)
+int _printint(va_list list, int base)
 {
 	size_t c = va_arg(list, int);
 
