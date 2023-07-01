@@ -23,6 +23,7 @@ int base_fn(size_t unsignedlong, int base)
 	}
 		else
 			arr[i] = 'a' + m - 10;
+		arr = realloc(arr, sizeof(char) + (sizeof(char) * i++));
 		unsignedlong /= base;
 	} while (unsignedlong > 0);
 	do {
