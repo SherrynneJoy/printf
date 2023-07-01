@@ -19,6 +19,7 @@ int _printf(const char *format, ...)
 	fmt_t fmt[] = {
 		{"c", printChar},
 		{"s", printStr},
+		{"d", is_digit},
 		{NULL, NULL}
 	};
 

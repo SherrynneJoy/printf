@@ -18,5 +18,6 @@ int printChar(va_list args);
 int _putchar(char c);
 int check_specifier(const char *format, va_list args,
 		fmt_t *fmt);
+int is_digit(char c);
 
 #endif
